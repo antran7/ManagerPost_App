@@ -18,8 +18,13 @@ function LoginPage() {
 
                 if (userExists) {
                     console.log("User exists, login successful!");
-                    localStorage.setItem("user", JSON.stringify(userExists)); 
-                                       navigate("/user-posts");
+                    localStorage.setItem("user", JSON.stringify(userExists));
+                    if (userExists.role === "user") {
+                        navigate("/home");
+                    }else
+                    if (userExists.role === "admin") {
+                        navigate("/adminPostManagement");
+                    }
                 } else {
                     console.log("Invalid username or password!");
                     alert('Invalid username or password!');
@@ -29,7 +34,6 @@ function LoginPage() {
             console.error("Error fetching users:", error);
         }
     }
-
     return (
         <>
             <Row className='homepage'>
