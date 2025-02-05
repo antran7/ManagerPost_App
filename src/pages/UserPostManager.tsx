@@ -13,6 +13,7 @@ interface Post {
   userId?: number;
   createDate?: string;
   updateDate?: string;
+  status?: string;
 }
 
 const UserPostManager: React.FC = () => {
@@ -41,7 +42,8 @@ const UserPostManager: React.FC = () => {
         id: posts[editingPost].id,
         userId: posts[editingPost].userId,
         createDate: posts[editingPost].createDate,
-        updateDate: getCurrentDate(), // Cập nhật ngày sửa
+        updateDate: getCurrentDate(),
+        status: posts[editingPost].status // Keep existing status when updating
       };
 
       axios.put(`https://67a1b9be5bcfff4fabe339d0.mockapi.io/api/Post/${updatedPost.id}`, updatedPost)
@@ -59,6 +61,7 @@ const UserPostManager: React.FC = () => {
         userId: getNextUserId(),
         createDate: getCurrentDate(),
         updateDate: getCurrentDate(),
+        status: "pending" // Automatically set status to pending for new posts
       };
 
       axios.post("https://67a1b9be5bcfff4fabe339d0.mockapi.io/api/Post", newPost)
@@ -124,9 +127,7 @@ const UserPostManager: React.FC = () => {
               description={
                 <>
                   <p>{post.description}</p>
-                  {/* <small>Created: {post.createDate}</small>
-                  <br />
-                  <small>Updated: {post.updateDate}</small> */}
+                  {post.status && <small>Status: {post.status}</small>}
                 </>
               }
             />
