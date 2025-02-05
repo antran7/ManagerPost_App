@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import UserPostManager from "./pages/UserPostManager";
 import HomePage from "./pages/HomePage";
 import AdminPostManagement from "./pages/admin-management/AdminPostManagement";
+import AllPosts from "./pages/AllPosts";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -17,6 +18,8 @@ function App() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/user-posts" element={<UserPostManager />} />
           <Route path="/admin-posts" element={<AdminPostManagement />} />
+          <Route path="/admin-posts" element={<AdminPostManagement />} />
+          <Route path="/allposts" element={<AllPosts />} />
         </Routes>
       </BrowserRouter>
     </>
