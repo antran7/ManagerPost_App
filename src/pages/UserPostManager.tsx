@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, Upload, List } from "antd";
+import { Form, Input, Button, Upload, List, Tag } from "antd";
 import { UploadOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
 import dayjs from "dayjs"; 
@@ -13,6 +13,7 @@ interface Post {
   userId?: number;
   createDate?: string;
   updateDate?: string;
+  status?: string;
 }
 
 const UserPostManager: React.FC = () => {
@@ -41,7 +42,8 @@ const UserPostManager: React.FC = () => {
         id: posts[editingPost].id,
         userId: posts[editingPost].userId,
         createDate: posts[editingPost].createDate,
-        updateDate: getCurrentDate(), // Cập nhật ngày sửa
+        updateDate: getCurrentDate(),
+        status: posts[editingPost].status
       };
 
       axios.put(`https://67a1b9be5bcfff4fabe339d0.mockapi.io/api/Post/${updatedPost.id}`, updatedPost)
@@ -59,6 +61,7 @@ const UserPostManager: React.FC = () => {
         userId: getNextUserId(),
         createDate: getCurrentDate(),
         updateDate: getCurrentDate(),
+        status: "pending"
       };
 
       axios.post("https://67a1b9be5bcfff4fabe339d0.mockapi.io/api/Post", newPost)
@@ -80,6 +83,15 @@ const UserPostManager: React.FC = () => {
     axios.delete(`https://67a1b9be5bcfff4fabe339d0.mockapi.io/api/Post/${postId}`)
       .then(() => setPosts(posts.filter((_, i) => i !== index)))
       .catch((error) => console.error("Error deleting post:", error));
+  };
+
+  const getStatusColor = (status?: string) => {
+    switch(status) {
+      case 'pending': return 'orange';
+      case 'approved': return 'green';
+      case 'rejected': return 'red';
+      default: return 'default';
+    }
   };
 
   return (
@@ -120,15 +132,13 @@ const UserPostManager: React.FC = () => {
             ]}
           >
             <List.Item.Meta
-              title={`${post.title}`}
-              description={
-                <>
-                  <p>{post.description}</p>
-                  {/* <small>Created: {post.createDate}</small>
-                  <br />
-                  <small>Updated: {post.updateDate}</small> */}
-                </>
+              title={
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  {post.title}
+                  <Tag color={getStatusColor(post.status)}>{post.status}</Tag>
+                </div>
               }
+              description={post.description}
             />
           </List.Item>
         )}
