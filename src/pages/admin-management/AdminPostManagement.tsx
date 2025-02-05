@@ -1,12 +1,5 @@
-import React from "react";
 import { Layout, Menu } from "antd";
-import {
-  DashboardOutlined,
-  ShoppingCartOutlined,
-  BarChartOutlined,
-  FileOutlined,
-  AppstoreOutlined,
-} from "@ant-design/icons";
+import { UserOutlined, FileTextOutlined } from "@ant-design/icons";
 import AdminPostTable from "./AdminPostTable";
 
 const { Header, Content, Sider } = Layout;
@@ -19,13 +12,13 @@ const MENU_ITEMS = [
     children: [
       {
         key: "postManagement",
-        icon: <DashboardOutlined />,
-        label: "Post Management",
+        icon: <UserOutlined />,
+        label: "User Management",
       },
       {
         key: "orders",
-        icon: <ShoppingCartOutlined />,
-        label: "Orders",
+        icon: <FileTextOutlined />,
+        label: "Post Management",
       },
     ],
   },
