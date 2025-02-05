@@ -12,14 +12,21 @@ function LoginPage() {
         try {
             const data = await getAllUsers();
             if (data) {
+              
                 const userExists = data.find(user =>
                     user.name === values.username && user.password === values.password
                 );
 
                 if (userExists) {
                     console.log("User exists, login successful!");
-                    localStorage.setItem("user", JSON.stringify(userExists)); 
-                                       navigate("/allposts");
+                    localStorage.setItem("user", JSON.stringify(userExists));
+
+                    
+                    if (userExists.role === 'admin') {
+                        navigate("/admin-posts"); 
+                    } else {
+                        navigate("/allposts"); 
+                    }
                 } else {
                     console.log("Invalid username or password!");
                     alert('Invalid username or password!');
