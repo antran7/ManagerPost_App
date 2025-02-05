@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TextField, Button, Paper, Typography, Modal, Box } from "@mui/material";
-import { createPost } from "../../api/postApi"; // Import hàm gọi API
+import { createPost } from "../../api/postApi"; 
 
 export default function AdminModalPost() {
 
@@ -34,7 +34,7 @@ export default function AdminModalPost() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await createPost(post); // Gọi API để tạo post
+      const response = await createPost(post);
       alert("Post created successfully!");
       setPost({
         userId: userId,
@@ -108,7 +108,6 @@ export default function AdminModalPost() {
     </Paper>
         </Box>
       </Modal>
-  </div>
-    
+  </div>    
   );
 }
