@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-.homepage__header {
+.loginpage__header {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -27,7 +27,7 @@
     }
 }
 
-.homepage__content-login {
+.loginpage__content-login {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -57,7 +57,7 @@
     }
 }
 
-.homepage__login {
+.loginpage__login {
     width: 400px;
     padding: 18px;
     border-radius: 15px;

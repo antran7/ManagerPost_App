@@ -18,7 +18,7 @@ function LoginPage() {
 
                 if (userExists) {
                     console.log("User exists, login successful!");
-                    localStorage.setItem("user", userExists);
+                    localStorage.setItem("user", JSON.stringify(userExists));
                     navigate("/home");
                 } else {
                     console.log("Invalid username or password!");
@@ -32,13 +32,13 @@ function LoginPage() {
 
     return (
         <>
-            <Row className='homepage'>
-                <Col span={24} className='homepage__header'>
+            <Row className='loginpage'>
+                <Col span={24} className='loginpage__header'>
                     <h2>Welcome to the website</h2>
                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore, maiores repudiandae aliquid quibusdam enim asperiores officiis quasi. Esse dolore a quo commodi facilis, quia sunt suscipit mollitia iste assumenda molestiae!</p>
                 </Col>
-                <Col span={24} className='homepage__content'>
-                    <div className='homepage__content-login'>
+                <Col span={24} className='loginpage__content'>
+                    <div className='loginpage__content-login'>
                         <h3>User Login</h3>
                         <Form onFinish={handleFinish}>
                             <Form.Item name='username'>
@@ -64,7 +64,7 @@ function LoginPage() {
                                     </a>
                                 </Flex>
                             </Form.Item>
-                            <Button className='homepage__login' htmlType='submit'>
+                            <Button className='loginpage__login' htmlType='submit'>
                                 Login
                             </Button>
                         </Form>

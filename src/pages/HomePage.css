@@ -1,0 +1,15 @@
+.homepage__layout {
+    .homepage__layout__grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); /* 4 cột trên mỗi hàng */
+        gap: 16px; /* Khoảng cách giữa các bài viết */
+      }
+      
+      .homepage__layout__grid-item {
+        background: #fff; /* Màu nền của mỗi bài viết */
+        padding: 16px;
+        border: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng nhẹ */
+      }
+      
+}

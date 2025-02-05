@@ -1,55 +1,60 @@
-import axios from "axios";
+import axiosInstance from "./axiosInstance";
 
-const apiURL = "https://67a1b9be5bcfff4fabe339d0.mockapi.io/api/Post"
+const apiURL = "/Post"
 
 export const getAllPosts = async () => {
     try {
-    const response = await axios.get(apiURL)
+    const response = await axiosInstance.get(apiURL);
     return response.data;
 
-    }catch(e) {
-        console.log(e.toString())
+    }catch(error) {
+        console.error(e.toString());
+        throw error;
     }
 }
 
-export const getPostById = async (id) => {
+export const getPostById = async (id: string) => {
     try {
-        const response = await axios.get(`${apiURL}/${id}`);
+        const response = await axiosInstance.get(`${apiURL}/${id}`);
         return response.data;
     } catch (error) {
-        console.log(error.toString());
+        console.error(error.toString());
+        throw error;
     }
 }
 
 export const createPost =async (post) => {
     try {
-        const response = await axios.post(`${apiURL}`, post)
+        const response = await axiosInstance.post(`${apiURL}`, post);
         return response.data;
 
-    }catch(e) {
-        console.log(e.toString())
+    }catch(error) {
+        console.error(e.toString());
+        throw error;
     }
     
 }
 
 export const updatePost = async (id, post) => {
     try {
-        const response = await axios.put(`${apiURL}/${id}`, post)
+        const response = await axiosInstance.put(`${apiURL}/${id}`, post);
         return response.data;
 
-    }catch(e) {
-        console.log(e.toString())
+    }catch(error) {
+        console.error(e.toString());
+        throw error;
     }
     
 }
 
-export const deletePost =async (id) => {
+export const deletePost =async (id: string) => {
     try {
-        const response = await axios.delete(`${apiURL}/${id}`)
+        const response = await axiosInstance.delete(`${apiURL}/${id}`);
         return response.data;
 
-    }catch(e) {
-        console.log(e.toString())
+    }catch(error) {
+        console.error(e.toString());
+        throw error;
     }
     
 }
