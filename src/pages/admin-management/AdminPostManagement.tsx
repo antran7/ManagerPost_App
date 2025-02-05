@@ -13,9 +13,7 @@ import AdminPostTable from "./AdminPostTable";
 import AdminUserTable from "./AdminUserTable";
 import AdminPostApproval from "./AdminPostApproval";
 
-const { Header, Content, Sider } = Layout;
-
-const MENU_ITEMS = [
+const NAVIGATION: Navigation = [
   {
     kind: "header",
     title: "Main items",
@@ -55,9 +53,9 @@ const MENU_ITEMS = [
     icon: <BarChartIcon />,
     children: [
       {
-        key: "postManagement",
-        icon: <DashboardOutlined />,
-        label: "Post Management",
+        segment: "sales",
+        title: "Sales",
+        icon: <DescriptionIcon />,
       },
     ],
   }

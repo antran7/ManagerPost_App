@@ -16,7 +16,7 @@
     "@mui/material": "^6.4.3",
     "@mui/styled-engine-sc": "^6.4.3",
     "@toolpad/core": "^0.12.0",
-    "antd": "^5.23.4",
+    "antd": "^5.23.3",
     "axios": "^1.7.9",
     "manager-post-app": "file:",
     "react": "^18.3.1",
