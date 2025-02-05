@@ -25,7 +25,7 @@ function LoginPage() {
                     if (userExists.role === 'admin') {
                         navigate("/admin-posts"); 
                     } else {
-                        navigate("/user-posts"); 
+                        navigate("/allposts"); 
                     }
                 } else {
                     console.log("Invalid username or password!");
