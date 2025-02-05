@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Upload, List, Tag } from "antd";
 import { UploadOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import dayjs from "dayjs"; 
 import "./UserPostManager.css";
@@ -20,6 +21,7 @@ const UserPostManager: React.FC = () => {
   const [form] = Form.useForm();
   const [posts, setPosts] = useState<Post[]>([]);
   const [editingPost, setEditingPost] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get("https://67a1b9be5bcfff4fabe339d0.mockapi.io/api/Post")
@@ -76,6 +78,10 @@ const UserPostManager: React.FC = () => {
   const onEdit = (index: number) => {
     setEditingPost(index);
     form.setFieldsValue(posts[index]);
+  };
+
+  const back = () => {
+    navigate("/allposts");
   };
 
   const onDelete = (index: number) => {
@@ -143,6 +149,7 @@ const UserPostManager: React.FC = () => {
           </List.Item>
         )}
       />
+      <button  onClick={back}>Back to All Posts</button>
     </div>
     </div>
   );
