@@ -1,0 +1,66 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.homepage__header {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    color: #eee;
+    background-image: url('https://www.freecodecamp.org/news/content/images/size/w2000/2021/06/w-qjCHPZbeXCQ-unsplash.jpg');
+    /* background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; */
+    min-height: 50vh;
+    font-size: 30;
+    padding: 0 100px;
+    h2 {
+        font-weight: lighter;
+        font-size: 50px;
+        margin-bottom: 10px;
+    }
+    
+    p {
+        font-size: 18px;
+    }
+}
+
+.homepage__content-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #FF627F;
+    height: 50vh;
+
+    h3 {
+        font-size: 40px;
+        font-weight: normal;
+        
+    }
+
+    .ant-form {
+        margin-top: 50px;
+    }
+
+    .ant-input-affix-wrapper {
+        width: 400px;
+        padding: 10px 20px;
+        background-color: #ffdfe4;
+        border-radius: 12px;
+    }
+
+    .ant-input-prefix {
+        margin-right: 8px;
+    }
+}
+
+.homepage__login {
+    width: 400px;
+    padding: 18px;
+    border-radius: 15px;
+    background-color: #FF627F;
+    color: #eee;
+}

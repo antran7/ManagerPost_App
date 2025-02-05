@@ -1,55 +1,53 @@
-import axios from "axios"
+import axiosInstance from "./axiosInstance";
 
-const apiURL = "https://67a1b9be5bcfff4fabe339d0.mockapi.io/api/User"
+const apiURL = "/User";
 
 export const getAllUsers = async () => {
-    try {
-    const response = await axios.get(apiURL)
+  try {
+    const response = await axiosInstance.get(apiURL);
     return response.data;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    throw error;
+  }
+};
 
-    }catch(e) {
-        console.log(e.toString())
-    }
-}
+export const getUserById = async (id: string) => {
+  try {
+    const response = await axiosInstance.get(`${apiURL}/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    throw error;
+  }
+};
 
-export const getUserById = async (id) => {
-    try {
-        const response = await axios.get(`${apiURL}/${id}`);
-        return response.data;
-    } catch (error) {
-        console.log(error.toString());
-    }
-}
+export const createUser = async (user: { name: string; email: string }) => {
+  try {
+    const response = await axiosInstance.post(apiURL, user);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating user:", error);
+    throw error;
+  }
+};
 
-export const createUser =async (user) => {
-    try {
-        const response = await axios.post(`${apiURL}`, user)
-        return response.data;
+export const updateUser = async (id: string, user: { name?: string; email?: string }) => {
+  try {
+    const response = await axiosInstance.put(`${apiURL}/${id}`, user);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user:", error);
+    throw error;
+  }
+};
 
-    }catch(e) {
-        console.log(e.toString())
-    }
-    
-}
-
-export const updateUser =async (id, user) => {
-    try {
-        const response = await axios.put(`${apiURL}/${id}`, user)
-        return response.data;
-
-    }catch(e) {
-        console.log(e.toString())
-    }
-    
-}
-
-export const deleteUser =async (id) => {
-    try {
-        const response = await axios.delete(`${apiURL}/${id}`)
-        return response.data;
-
-    }catch(e) {
-        console.log(e.toString())
-    }
-    
-}
+export const deleteUser = async (id: string) => {
+  try {
+    const response = await axiosInstance.delete(`${apiURL}/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    throw error;
+  }
+};
