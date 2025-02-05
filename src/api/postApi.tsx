@@ -4,9 +4,12 @@ const apiURL = "/Post"
 
 export const getAllPosts = async () => {
     try {
-        const role = localStorage.getItem("role");
-        if (role !== "admin") {
-            throw new Error("You are not allowed to do this.");
+        const user = localStorage.getItem("user");
+        if (user) {
+            const parsedUser = JSON.parse(user);
+            if (parsedUser.role !== "admin") {
+                throw new Error("You are not allowed to do this.");
+            }
         }
         const response = await axiosInstance.get(apiURL);
         return response.data;
@@ -75,11 +78,17 @@ export const deletePost = async (id: string) => {
 
 export const approvePost = async (id: string) => {
     try {
-        const role = localStorage.getItem("role");
-        if (role !== "admin") {
-            throw new Error("Only admins can approve posts.");
+        const user = localStorage.getItem("user");
+        if (user) {
+            const parsedUser = JSON.parse(user);
+            if (parsedUser.role !== "admin") {
+                throw new Error("Only admins can approve posts.");
+            }
         }
-        const response = await axiosInstance.put(`${apiURL}/approve/${id}`);
+        const { data: existingPost } = await axiosInstance.get(`${apiURL}/${id}`);
+        const updatedPost = { ...existingPost, status: "approved" };
+
+        const response = await axiosInstance.put(`${apiURL}/${id}`, updatePost);
         return response.data;
     } catch (error) {
         console.error(error.toString());
@@ -89,11 +98,17 @@ export const approvePost = async (id: string) => {
 
 export const rejectPost = async (id: string) => {
     try {
-        const role = localStorage.getItem("role");
-        if (role !== "admin") {
-            throw new Error("Only admins can reject posts.");
+        const user = localStorage.getItem("user");
+        if (user) {
+            const parsedUser = JSON.parse(user);
+            if (parsedUser.role !== "admin") {
+                throw new Error("Only admins can reject posts.");
+            }
         }
-        const response = await axiosInstance.put(`${apiURL}/reject/${id}`);
+        const { data: existingPost } = await axiosInstance.get(`${apiURL}/${id}`);
+        const updatedPost = { ...existingPost, status: "rejected" };
+
+        const response = await axiosInstance.put(`${apiURL}/${id}`, updatePost);
         return response.data;
     } catch (error) {
         console.error(error.toString());

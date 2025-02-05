@@ -4,10 +4,6 @@ const apiURL = "/User";
 
 export const getAllUsers = async () => {
   try {
-    const role = localStorage.getItem("role");
-    if (role !== "admin") {
-      throw new Error("Only admins can view all users.");
-    }
     const response = await axiosInstance.get(apiURL);
     return response.data;
   } catch (error) {
@@ -18,10 +14,6 @@ export const getAllUsers = async () => {
 
 export const getUserById = async (id: string) => {
   try {
-    const role = localStorage.getItem("role");
-    if (role !== "admin") {
-      throw new Error("Only admins can view all users.");
-    }
     const response = await axiosInstance.get(`${apiURL}/${id}`);
     return response.data;
   } catch (error) {

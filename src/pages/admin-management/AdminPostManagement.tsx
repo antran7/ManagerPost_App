@@ -4,12 +4,15 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import BarChartIcon from "@mui/icons-material/BarChart";
 import DescriptionIcon from "@mui/icons-material/Description";
-import LayersIcon from "@mui/icons-material/Layers";
+import PendingIcon from '@mui/icons-material/Pending';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 import { AppProvider, Navigation, Router } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 
 import AdminPostTable from "./AdminPostTable";
 import AdminModalPost from "./AdminModalPost";
+import AdminUserTable from "./AdminUserTable";
+import AdminPostApproval from "./AdminPostApproval";
 
 const NAVIGATION: Navigation = [
   {
@@ -17,14 +20,26 @@ const NAVIGATION: Navigation = [
     title: "Main items",
   },
   {
-    segment: "orders",
+    segment: "usersManagement",
     title: "Users Management",
     icon: <PersonSearchIcon />,
   },
   {
-    segment: "postManagement",
+    segment: "post",
     title: "Posts Management",
     icon: <DashboardIcon />,
+    children: [
+      {
+        segment: "postManagement",
+        title: "Posts List",
+        icon: <BorderColorIcon />,
+      },
+      {
+        segment: "postApproval",
+        title: "Pending Posts",
+        icon: <PendingIcon />,
+      },
+    ]
   },
   {
     kind: "divider",
@@ -44,12 +59,7 @@ const NAVIGATION: Navigation = [
         icon: <DescriptionIcon />,
       },
     ],
-  },
-  {
-    segment: "integrations",
-    title: "Integrations",
-    icon: <LayersIcon />,
-  },
+  }
 ];
 
 const demoTheme = extendTheme({
@@ -89,12 +99,21 @@ export default function AdminPostManagement(props: any) {
   // Remove this const when copying and pasting into your project.
   const demoWindow = window ? window() : undefined;
 
+  let content;
+  if (router.pathname === "/usersManagement") {
+    content = <AdminUserTable />;
+  } else if (router.pathname === "/post/postManagement") {
+    content = <AdminPostTable />;
+  } else if (router.pathname === "/post/postApproval") {
+    content = <AdminPostApproval />;
+  } else {
+    content = <div>Chọn một mục từ main items</div>;
+  }
+
   return (
     <AppProvider navigation={NAVIGATION} router={router} theme={demoTheme} window={demoWindow}>
       <DashboardLayout>
-        <AdminModalPost />
-
-        <AdminPostTable />
+        {content}
       </DashboardLayout>
     </AppProvider>
   );

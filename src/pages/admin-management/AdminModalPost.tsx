@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TextField, Button, Paper, Typography, Modal, Box } from "@mui/material";
-import { createPost } from "../../api/postApi"; 
+import { createPost } from "../../api/postApi";
 
 export default function AdminModalPost() {
 
@@ -15,8 +15,8 @@ export default function AdminModalPost() {
     }
   }, []);
 
-  const [post, setPost] = useState({    
-    userId: "", 
+  const [post, setPost] = useState({
+    userId: "",
     title: "",
     description: "",
     status: "active",
@@ -60,14 +60,14 @@ export default function AdminModalPost() {
     boxShadow: 24,
     p: 4,
   };
-   const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-  
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
-  <div>
-      
-    <Button onClick={handleOpen}>Create New Post</Button>
+    <div>
+
+      <Button onClick={handleOpen}>Create New Post</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -75,39 +75,39 @@ export default function AdminModalPost() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-        <Paper sx={{ padding: 3, maxWidth: 500, margin: "auto" }}>
-      <Typography variant="h6" gutterBottom>
-        Create New Post
-      </Typography>
-      <form onSubmit={handleSubmit}>
-      
-        <TextField
-          fullWidth
-          label="Title"
-          name="title"
-          value={post.title}
-          onChange={handleChange}
-          margin="normal"
-          required
-        />
-        <TextField
-          fullWidth
-          label="Description"
-          name="description"
-          value={post.description}
-          onChange={handleChange}
-          margin="normal"
-          multiline
-          rows={3}
-          required
-        />
-        <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-          Submit
-        </Button>
-      </form>
-    </Paper>
+          <Paper sx={{ padding: 3, maxWidth: 500, margin: "auto" }}>
+            <Typography variant="h6" gutterBottom>
+              Create New Post
+            </Typography>
+            <form onSubmit={handleSubmit}>
+
+              <TextField
+                fullWidth
+                label="Title"
+                name="title"
+                value={post.title}
+                onChange={handleChange}
+                margin="normal"
+                required
+              />
+              <TextField
+                fullWidth
+                label="Description"
+                name="description"
+                value={post.description}
+                onChange={handleChange}
+                margin="normal"
+                multiline
+                rows={3}
+                required
+              />
+              <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+                Submit
+              </Button>
+            </form>
+          </Paper>
         </Box>
       </Modal>
-  </div>    
+    </div>
   );
 }
