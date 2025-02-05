@@ -1,7 +1,7 @@
-import { Button, Checkbox, Col, Flex, Form, Input, Row } from 'antd'
+import { Button, Checkbox, Col, Flex, Form, Input, Row } from 'antd';
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import './HomePage.css'
-import React, { useState } from 'react'
+import './HomePage.css';
+import React, { useState } from 'react';
 import { getAllUsers } from '../api/userApi';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,7 +21,9 @@ function HomePage() {
 
                 if (userExists) {
                     console.log("User exists, login successful!");
-                    localStorage.setItem("user", userExists);
+                    localStorage.setItem("user", JSON.stringify(userExists));
+                    setIsLoggedIn(true);
+                    navigate("/user-posts"); // Chuyển hướng đến UserPostManager
                 } else {
                     console.log("Invalid username or password!");
                 }
@@ -29,7 +31,7 @@ function HomePage() {
         } catch (error) {
             console.error("Error fetching users:", error);
         }
-    }
+    };
 
     return (
         <>
@@ -41,47 +43,36 @@ function HomePage() {
                 <Col span={24} className='homepage__content'>
                     {isLoggedIn ? (
                         <div>
-                            <Button>Manage</Button>
+                            <Button onClick={() => navigate("/user-posts")}>Manage</Button>
                         </div>
-                        
                     ) : (
                         <div className='homepage__content-login'>
                             <h3>User Login</h3>
                             <Form onFinish={handleFinish}>
-                                <Form.Item name='username'>
-                                    <Input
-                                        prefix={<UserOutlined />}
-                                        placeholder='Username'
-                                    />
+                                <Form.Item name='username' rules={[{ required: true, message: 'Please enter your username!' }]}>
+                                    <Input prefix={<UserOutlined />} placeholder='Username' />
                                 </Form.Item>
-                                <Form.Item name='password'>
-                                    <Input.Password
-                                        prefix={<LockOutlined />}
-                                        type='password'
-                                        placeholder='Password'
-                                    />
+                                <Form.Item name='password' rules={[{ required: true, message: 'Please enter your password!' }]}>
+                                    <Input.Password prefix={<LockOutlined />} placeholder='Password' />
                                 </Form.Item>
                                 <Form.Item>
                                     <Flex justify="space-between" align="center">
                                         <Form.Item name="remember" valuePropName="checked" noStyle>
                                             <Checkbox>Remember me</Checkbox>
                                         </Form.Item>
-                                        <a className="forgot-password" href="">
-                                            Forgot password
-                                        </a>
+                                        <a className="forgot-password" href="#">Forgot password?</a>
                                     </Flex>
                                 </Form.Item>
-                                <Button className='homepage__login' htmlType='submit'>
+                                <Button className='homepage__login' type="primary" htmlType='submit'>
                                     Login
                                 </Button>
                             </Form>
                         </div>
                     )}
-
                 </Col>
             </Row>
         </>
-    )
+    );
 }
 
-export default HomePage
+export default HomePage;
