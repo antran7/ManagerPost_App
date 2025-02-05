@@ -1,106 +1,56 @@
 import React from "react";
-import { extendTheme} from "@mui/material/styles";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import DescriptionIcon from "@mui/icons-material/Description";
-import LayersIcon from "@mui/icons-material/Layers";
-import { AppProvider, Navigation, Router } from "@toolpad/core/AppProvider";
-import { DashboardLayout } from "@toolpad/core/DashboardLayout";
-
+import { Layout, Menu } from "antd";
+import {
+  DashboardOutlined,
+  ShoppingCartOutlined,
+  BarChartOutlined,
+  FileOutlined,
+  AppstoreOutlined,
+} from "@ant-design/icons";
 import AdminPostTable from "./AdminPostTable";
-import AdminModalPost from "./AdminModalPost";
 
-const NAVIGATION: Navigation = [
+const { Header, Content, Sider } = Layout;
+
+const MENU_ITEMS = [
   {
-    kind: "header",
-    title: "Main items",
-  },
-  {
-    segment: "postManagement",
-    title: "Post Management",
-    icon: <DashboardIcon />,
-  },
-  {
-    segment: "orders",
-    title: "Orders",
-    icon: <ShoppingCartIcon />,
-  },
-  {
-    kind: "divider",
-  },
-  {
-    kind: "header",
-    title: "Analytics",
-  },
-  {
-    segment: "reports",
-    title: "Reports",
-    icon: <BarChartIcon />,
+    key: "main",
+    label: "Main items",
+    type: "group",
     children: [
       {
-        segment: "sales",
-        title: "Sales",
-        icon: <DescriptionIcon />,
+        key: "postManagement",
+        icon: <DashboardOutlined />,
+        label: "Post Management",
       },
       {
-        segment: "traffic",
-        title: "Traffic",
-        icon: <DescriptionIcon />,
+        key: "orders",
+        icon: <ShoppingCartOutlined />,
+        label: "Orders",
       },
     ],
   },
-  {
-    segment: "integrations",
-    title: "Integrations",
-    icon: <LayersIcon />,
-  },
 ];
 
-const demoTheme = extendTheme({
-  colorSchemes: { light: true, dark: true },
-  colorSchemeSelector: "class",
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 600,
-      lg: 1200,
-      xl: 1536,
-    },
-  },
-});
-
-function useDemoRouter(initialPath: string): Router {
-  const [pathname, setPathname] = React.useState(initialPath);
-
-  const router = React.useMemo(() => {
-    return {
-      pathname,
-      searchParams: new URLSearchParams(),
-      navigate: (path: string | URL) => setPathname(String(path)),
-    };
-  }, [pathname]);
-
-  return router;
-}
-
-
-export default function AdminPostManagement(props: any) {
-  const { window } = props;
-
-  const router = useDemoRouter("/postManagement");
-
-  // Remove this const when copying and pasting into your project.
-  const demoWindow = window ? window() : undefined;
-
+export default function AdminPostManagement() {
   return (
-    <AppProvider navigation={NAVIGATION} router={router} theme={demoTheme} window={demoWindow}>
-      <DashboardLayout>
-      <AdminModalPost />
-
-      <AdminPostTable/>
-      </DashboardLayout>
-    </AppProvider>
+    <Layout style={{ minHeight: "100vh" }}>
+      <Sider width={200} theme="light">
+        <Menu
+          mode="inline"
+          defaultSelectedKeys={["postManagement"]}
+          defaultOpenKeys={["main"]}
+          style={{ height: "100%", borderRight: 0 }}
+          items={MENU_ITEMS}
+        />
+      </Sider>
+      <Layout>
+        <Header style={{ background: "#fff", padding: 0 }} />
+        <Content
+          style={{ margin: "24px 16px", padding: 24, background: "#fff" }}
+        >
+          <AdminPostTable />
+        </Content>
+      </Layout>
+    </Layout>
   );
 }
