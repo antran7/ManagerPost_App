@@ -12,6 +12,7 @@ function LoginPage() {
         try {
             const data = await getAllUsers();
             if (data) {
+              
                 const userExists = data.find(user =>
                     user.name === values.username && user.password === values.password
                 );
@@ -19,11 +20,12 @@ function LoginPage() {
                 if (userExists) {
                     console.log("User exists, login successful!");
                     localStorage.setItem("user", JSON.stringify(userExists));
-                    if (userExists.role === "user") {
-                        navigate("/home");
-                    }else
-                    if (userExists.role === "admin") {
-                        navigate("/adminPostManagement");
+
+                    
+                    if (userExists.role === 'admin') {
+                        navigate("/admin-posts"); 
+                    } else {
+                        navigate("/user-posts"); 
                     }
                 } else {
                     console.log("Invalid username or password!");
@@ -34,6 +36,7 @@ function LoginPage() {
             console.error("Error fetching users:", error);
         }
     }
+
     return (
         <>
             <Row className='homepage'>
