@@ -1,7 +1,7 @@
 import React from "react";
-import { extendTheme} from "@mui/material/styles";
+import { extendTheme } from "@mui/material/styles";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import BarChartIcon from "@mui/icons-material/BarChart";
 import DescriptionIcon from "@mui/icons-material/Description";
 import LayersIcon from "@mui/icons-material/Layers";
@@ -17,14 +17,14 @@ const NAVIGATION: Navigation = [
     title: "Main items",
   },
   {
-    segment: "postManagement",
-    title: "Post Management",
-    icon: <DashboardIcon />,
+    segment: "orders",
+    title: "Users Management",
+    icon: <PersonSearchIcon />,
   },
   {
-    segment: "orders",
-    title: "Orders",
-    icon: <ShoppingCartIcon />,
+    segment: "postManagement",
+    title: "Posts Management",
+    icon: <DashboardIcon />,
   },
   {
     kind: "divider",
@@ -41,11 +41,6 @@ const NAVIGATION: Navigation = [
       {
         segment: "sales",
         title: "Sales",
-        icon: <DescriptionIcon />,
-      },
-      {
-        segment: "traffic",
-        title: "Traffic",
         icon: <DescriptionIcon />,
       },
     ],
@@ -97,9 +92,9 @@ export default function AdminPostManagement(props: any) {
   return (
     <AppProvider navigation={NAVIGATION} router={router} theme={demoTheme} window={demoWindow}>
       <DashboardLayout>
-      <AdminModalPost />
+        <AdminModalPost />
 
-      <AdminPostTable/>
+        <AdminPostTable />
       </DashboardLayout>
     </AppProvider>
   );

@@ -3,7 +3,7 @@ import './HomePage.css';
 import { HomeOutlined, FileTextOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Layout, Menu, theme } from 'antd';
-import { getAllPosts } from '../api/postApi';
+import { getPostsByStatus } from '../api/postApi';
 import UserPost from '../components/UserPost';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -43,7 +43,7 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     const fetchingPost = async () => {
       try {
-        const data = await getAllPosts();
+        const data = await getPostsByStatus('approve');
         if (data) {
           setUserPosts(data);
         }
