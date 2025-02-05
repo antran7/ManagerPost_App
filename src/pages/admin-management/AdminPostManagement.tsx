@@ -97,6 +97,8 @@ export default function AdminPostManagement(props: any) {
   return (
     <AppProvider navigation={NAVIGATION} router={router} theme={demoTheme} window={demoWindow}>
       <DashboardLayout>
+      <AdminModalPost />
+
       <AdminPostTable/>
       </DashboardLayout>
     </AppProvider>
