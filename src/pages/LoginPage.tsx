@@ -19,7 +19,7 @@ function LoginPage() {
                 if (userExists) {
                     console.log("User exists, login successful!");
                     localStorage.setItem("user", JSON.stringify(userExists)); 
-                                       navigate("/user-posts");
+                                       navigate("/allposts");
                 } else {
                     console.log("Invalid username or password!");
                     alert('Invalid username or password!');
