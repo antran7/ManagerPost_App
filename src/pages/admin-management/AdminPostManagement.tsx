@@ -10,7 +10,6 @@ import { AppProvider, Navigation, Router } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 
 import AdminPostTable from "./AdminPostTable";
-import AdminModalPost from "./AdminModalPost";
 import AdminUserTable from "./AdminUserTable";
 import AdminPostApproval from "./AdminPostApproval";
 

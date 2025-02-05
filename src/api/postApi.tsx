@@ -4,13 +4,6 @@ const apiURL = "/Post"
 
 export const getAllPosts = async () => {
     try {
-        const user = localStorage.getItem("user");
-        if (user) {
-            const parsedUser = JSON.parse(user);
-            if (parsedUser.role !== "admin") {
-                throw new Error("You are not allowed to do this.");
-            }
-        }
         const response = await axiosInstance.get(apiURL);
         return response.data;
 

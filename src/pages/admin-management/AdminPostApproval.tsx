@@ -35,15 +35,6 @@ export default function AdminPostApproval() {
     fetchPosts();
   }, []);
 
-  // const handleDelete = async (postId: number) => {
-  //   try {
-  //     await deletePost(postId);
-  //     setPosts(prevPosts => prevPosts.filter(post => post.id !== postId));
-  //   } catch (error) {
-  //     console.error("Error deleting post:", error);
-  //   }
-  // };
-
   const handleApprove = async (postId: number) => {
     try {
       await approvePost(postId);
