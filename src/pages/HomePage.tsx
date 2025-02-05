@@ -41,8 +41,6 @@ const HomePage: React.FC = () => {
   const [userPosts, setUserPosts] = useState([]);
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    console.log(user);
     const fetchingPost = async () => {
       try {
         const data = await getAllPosts();

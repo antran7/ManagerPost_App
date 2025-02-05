@@ -10,6 +10,7 @@
     flex-direction: column;
     color: #eee;
     background-image: url('https://www.freecodecamp.org/news/content/images/size/w2000/2021/06/w-qjCHPZbeXCQ-unsplash.jpg');
+    background-size: cover;
     /* background-size: cover;
     background-position: center;
     background-repeat: no-repeat; */
