@@ -1,14 +1,7 @@
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import { Table, Popconfirm, message } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 import { deletePost, getAllPosts } from "../../api/postApi";
 import { useState, useEffect } from "react";
-import { DeleteOutlined } from "@ant-design/icons";
-import { message, Popconfirm, PopconfirmProps } from "antd";
 
 type Post = {
   id: number;
@@ -25,78 +18,95 @@ export default function AdminPostTable() {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    async function fetchPosts() {
-      try {
-        const data = await getAllPosts();
-        const sortedData = data.sort((a: Post, b: Post) =>
-          a.createDate < b.createDate ? -1 : 1
-        );
-        setPosts(sortedData);
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
     fetchPosts();
   }, []);
-  if (loading) return <p>Loading posts...</p>;
+
+  const fetchPosts = async () => {
+    try {
+      const data = await getAllPosts();
+      const sortedData = data.sort((a: Post, b: Post) =>
+        a.createDate < b.createDate ? -1 : 1
+      );
+      setPosts(sortedData);
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+      message.error("Failed to fetch posts");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleDelete = async (postId: number) => {
     try {
       await deletePost(postId);
       setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+      message.success("Post deleted successfully");
     } catch (error) {
       console.error("Error deleting post:", error);
+      message.error("Failed to delete post");
     }
   };
-  const confirm: PopconfirmProps["onConfirm"] = (postId) => {
-    handleDelete(postId);
-  };
 
-  const cancel: PopconfirmProps["onCancel"] = (e) => {
-    console.log(e);
-    message.error("Click on No");
-  };
+  const columns = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+    },
+    {
+      title: "Create Date",
+      dataIndex: "createDate",
+      key: "createDate",
+    },
+    {
+      title: "Update Date",
+      dataIndex: "updateDate",
+      key: "updateDate",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record: Post) => (
+        <Popconfirm
+          title="Delete the post"
+          description="Are you sure to delete this post?"
+          onConfirm={() => handleDelete(record.id)}
+          onCancel={() => message.error("Cancelled")}
+          okText="Yes"
+          cancelText="No"
+        >
+          <DeleteOutlined style={{ color: "#ff4d4f", cursor: "pointer" }} />
+        </Popconfirm>
+      ),
+    },
+  ];
+
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Title</TableCell>
-            <TableCell>Description</TableCell>
-            <TableCell>Status</TableCell>
-            <TableCell>Create Date</TableCell>
-            <TableCell>Update Date</TableCell>
-            <TableCell>Delete Post</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {posts.map((post) => (
-            <TableRow key={post.id}>
-              <TableCell>{post.id}</TableCell>
-              <TableCell>{post.title}</TableCell>
-              <TableCell>{post.description}</TableCell>
-              <TableCell>{post.status}</TableCell>
-              <TableCell>{post.createDate}</TableCell>
-              <TableCell>{post.updateDate}</TableCell>
-              <TableCell>
-                <Popconfirm
-                  title="Delete the task"
-                  description="Are you sure to delete this task?"
-                  onConfirm={() => confirm(post.id)}
-                  onCancel={cancel}
-                  okText="Yes"
-                  cancelText="No"
-                >
-                  <DeleteOutlined />{" "}
-                </Popconfirm>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Table
+      columns={columns}
+      dataSource={posts}
+      loading={loading}
+      rowKey="id"
+      pagination={{
+        defaultPageSize: 10,
+        showSizeChanger: true,
+        showTotal: (total) => `Total ${total} items`,
+      }}
+    />
   );
 }
