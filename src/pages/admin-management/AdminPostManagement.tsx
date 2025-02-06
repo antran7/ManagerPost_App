@@ -1,20 +1,28 @@
 import React from "react";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, Button } from "antd";
+import { useNavigate } from "react-router-dom";
 import {
   ReadOutlined,
   UserOutlined,
   ClockCircleOutlined,
   EditOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 import AdminPostTable from "./AdminPostTable";
 import AdminUserTable from "./AdminUserTable";
 import AdminPostApproval from "./AdminPostApproval";
 import type { MenuProps } from "antd";
 
-const { Content, Sider } = Layout;
+const { Content, Sider, Header } = Layout;
 
 export default function AdminPostManagement() {
   const [selectedKey, setSelectedKey] = React.useState("/post/postManagement");
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
+  };
 
   const items: MenuProps["items"] = [
     {
@@ -61,25 +69,46 @@ export default function AdminPostManagement() {
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Sider theme="light" width={200}>
-        <Menu
-          mode="inline"
-          selectedKeys={[selectedKey]}
-          style={{ height: "100%", borderRight: 0 }}
-          items={items}
-          onClick={({ key }) => setSelectedKey(key)}
-        />
-      </Sider>
-      <Layout style={{ padding: "24px" }}>
-        <Content
-          style={{
-            padding: 24,
-            margin: 0,
-            background: "#fff",
-          }}
+      <Header
+        style={{
+          padding: "0 24px",
+          background: "#fff",
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          borderBottom: "1px solid #f0f0f0",
+        }}
+      >
+        <Button
+          type="primary"
+          icon={<LogoutOutlined />}
+          onClick={handleLogout}
+          danger
         >
-          {content}
-        </Content>
+          Logout
+        </Button>
+      </Header>
+      <Layout>
+        <Sider theme="light" width={200}>
+          <Menu
+            mode="inline"
+            selectedKeys={[selectedKey]}
+            style={{ height: "100%", borderRight: 0 }}
+            items={items}
+            onClick={({ key }) => setSelectedKey(key)}
+          />
+        </Sider>
+        <Layout style={{ padding: "24px" }}>
+          <Content
+            style={{
+              padding: 24,
+              margin: 0,
+              background: "#fff",
+            }}
+          >
+            {content}
+          </Content>
+        </Layout>
       </Layout>
     </Layout>
   );
