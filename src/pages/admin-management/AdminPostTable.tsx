@@ -1,12 +1,12 @@
-import { Table, Typography, Spin, Popconfirm, message } from "antd";
+import { Table, Spin, Popconfirm, message } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { deletePost, getAllPosts } from "../../api/postApi";
 import { useState, useEffect } from "react";
 import type { ColumnsType } from "antd/es/table";
 
 type Post = {
-  id: number;
-  userId: number;
+  id: string;
+  userId: string;
   title: string;
   description: string;
   status: string;
@@ -37,7 +37,7 @@ export default function AdminPostTable() {
   }, []);
   if (loading) return <p>Loading posts...</p>;
 
-  const handleDelete = async (postId: number) => {
+  const handleDelete = async (postId: string) => {
     try {
       await deletePost(postId);
       setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
@@ -45,6 +45,7 @@ export default function AdminPostTable() {
       console.error("Error deleting post:", error);
     }
   };
+
   const columns: ColumnsType<Post> = [
     {
       title: "ID",

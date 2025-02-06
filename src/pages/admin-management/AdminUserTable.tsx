@@ -5,7 +5,7 @@ import { deleteUser, getAllUsers } from "../../api/userApi";
 import type { ColumnsType } from "antd/es/table";
 
 type User = {
-  id: number;
+  id: string;
   name: string;
   password: string;
   email: string;
@@ -37,7 +37,7 @@ export default function AdminUserTable() {
   }, []);
   if (loading) return <p>Loading posts...</p>;
 
-  const handleDelete = async (userId: number) => {
+  const handleDelete = async (userId: string) => {
     try {
       await deleteUser(userId);
       setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
@@ -45,6 +45,7 @@ export default function AdminUserTable() {
       console.error("Error deleting user:", error);
     }
   };
+
   const columns: ColumnsType<User> = [
     {
       title: "ID",

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
@@ -8,8 +7,6 @@ import AdminPostManagement from "./pages/admin-management/AdminPostManagement";
 import AllPosts from "./pages/AllPosts";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       <BrowserRouter>

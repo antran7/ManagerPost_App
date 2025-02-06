@@ -1,22 +1,17 @@
-import {
-  approvePost,
-  deletePost,
-  getPostsByStatus,
-  rejectPost,
-} from "../../api/postApi";
+import { approvePost, rejectPost, getPostsByStatus } from "../../api/postApi";
 import { useState, useEffect } from "react";
 import { Table, Typography, Spin, Button, Space } from "antd";
 import type { ColumnsType } from "antd/es/table";
 
-type Post = {
-  id: number;
-  userId: number;
+interface Post {
+  id: string;
+  userId: string;
   title: string;
   description: string;
   status: string;
   createDate: string;
   updateDate: string;
-};
+}
 
 export default function AdminPostApproval() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -40,21 +35,25 @@ export default function AdminPostApproval() {
     fetchPosts();
   }, []);
 
-  const handleApprove = async (postId: number) => {
+  const handleApprove = async (postId: string) => {
     try {
       await approvePost(postId);
       setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
-    } catch (error) {
-      console.error(error.toString());
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.toString());
+      }
     }
   };
 
-  const handleReject = async (postId: number) => {
+  const handleReject = async (postId: string) => {
     try {
       await rejectPost(postId);
       setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
-    } catch (error) {
-      console.error(error.toString());
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.toString());
+      }
     }
   };
 

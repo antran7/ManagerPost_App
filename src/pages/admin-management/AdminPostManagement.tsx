@@ -3,21 +3,20 @@ import { Layout, Menu } from "antd";
 import {
   ReadOutlined,
   UserOutlined,
-  BarChartOutlined,
-  FileTextOutlined,
   ClockCircleOutlined,
   EditOutlined,
 } from "@ant-design/icons";
 import AdminPostTable from "./AdminPostTable";
 import AdminUserTable from "./AdminUserTable";
 import AdminPostApproval from "./AdminPostApproval";
+import type { MenuProps } from "antd";
 
 const { Content, Sider } = Layout;
 
 export default function AdminPostManagement() {
   const [selectedKey, setSelectedKey] = React.useState("/post/postManagement");
 
-  const items = [
+  const items: MenuProps["items"] = [
     {
       key: "main-items",
       label: "Main items",

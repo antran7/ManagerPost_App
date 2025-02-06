@@ -1,19 +1,23 @@
 import { Button, Checkbox, Col, Flex, Form, Input, Row } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import "./LoginPage.css";
-import React, { useEffect, useState } from "react";
 import { getAllUsers } from "../api/userApi";
 import { useNavigate } from "react-router-dom";
+
+interface LoginValues {
+  username: string;
+  password: string;
+}
 
 function LoginPage() {
   const navigate = useNavigate();
 
-  const handleFinish = async (values) => {
+  const handleFinish = async (values: LoginValues) => {
     try {
       const data = await getAllUsers();
       if (data) {
         const userExists = data.find(
-          (user) =>
+          (user: { name: string; password: string }) =>
             user.name === values.username && user.password === values.password
         );
 
