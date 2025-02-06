@@ -10,8 +10,6 @@ import {
 } from "antd";
 import {
   PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
   LogoutOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
@@ -36,8 +34,6 @@ interface User {
 const ApprovedPostsViewer: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [approvedPosts, setApprovedPosts] = useState<Post[]>([]);
-  const [editingPost, setEditingPost] = useState<Post | null>(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [isApprovedModalVisible, setIsApprovedModalVisible] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
