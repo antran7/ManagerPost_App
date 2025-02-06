@@ -81,7 +81,7 @@ export const approvePost = async (id: string) => {
         const { data: existingPost } = await axiosInstance.get(`${apiURL}/${id}`);
         const updatedPost = { ...existingPost, status: "approved" };
 
-        const response = await axiosInstance.put(`${apiURL}/${id}`, updatePost);
+        const response = await axiosInstance.put(`${apiURL}/${id}`, updatedPost);
         return response.data;
     } catch (error) {
         console.error(error.toString());
@@ -101,7 +101,7 @@ export const rejectPost = async (id: string) => {
         const { data: existingPost } = await axiosInstance.get(`${apiURL}/${id}`);
         const updatedPost = { ...existingPost, status: "rejected" };
 
-        const response = await axiosInstance.put(`${apiURL}/${id}`, updatePost);
+        const response = await axiosInstance.put(`${apiURL}/${id}`, updatedPost);
         return response.data;
     } catch (error) {
         console.error(error.toString());

@@ -52,9 +52,12 @@ export const updateUser = async (id: string, user: { name?: string; email?: stri
 
 export const deleteUser = async (id: string) => {
   try {
-    const role = localStorage.getItem("role");
-    if (role !== "admin") {
-      throw new Error("Only admins can view all users.");
+    const user = localStorage.getItem("user");
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      if (parsedUser.role !== "admin") {
+        throw new Error("Only admins can delete user.");
+      }
     }
     const response = await axiosInstance.delete(`${apiURL}/${id}`);
     return response.data;
