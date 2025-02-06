@@ -1,14 +1,8 @@
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { deletePost, getAllPosts } from '../../api/postApi';
-import { useState, useEffect } from 'react';
-import { DeleteOutlined } from '@ant-design/icons';
-import { message, Popconfirm, PopconfirmProps } from 'antd';
+import { Table, Typography, Spin, Popconfirm, message } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
+import { deletePost, getAllPosts } from "../../api/postApi";
+import { useState, useEffect } from "react";
+import type { ColumnsType } from "antd/es/table";
 
 type Post = {
   id: number;
@@ -19,7 +13,6 @@ type Post = {
   createDate: string;
   updateDate: string;
 };
-
 
 export default function AdminPostTable() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -43,60 +36,65 @@ export default function AdminPostTable() {
     fetchPosts();
   }, []);
   if (loading) return <p>Loading posts...</p>;
+
   const handleDelete = async (postId: number) => {
     try {
       await deletePost(postId);
-      setPosts(prevPosts => prevPosts.filter(post => post.id !== postId));
-
+      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
     } catch (error) {
       console.error("Error deleting post:", error);
     }
   };
-  const confirm: PopconfirmProps['onConfirm'] = (postId) => {
-    handleDelete(postId);
-  };
+  const columns: ColumnsType<Post> = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+    },
+    {
+      title: "Create Date",
+      dataIndex: "createDate",
+      key: "createDate",
+    },
+    {
+      title: "Update Date",
+      dataIndex: "updateDate",
+      key: "updateDate",
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (_, record) => (
+        <Popconfirm
+          title="Delete the task"
+          description="Are you sure to delete this task?"
+          onConfirm={() => handleDelete(record.id)}
+          onCancel={() => message.error("Click on No")}
+          okText="Yes"
+          cancelText="No"
+        >
+          <DeleteOutlined style={{ cursor: "pointer" }} />
+        </Popconfirm>
+      ),
+    },
+  ];
 
-  const cancel: PopconfirmProps['onCancel'] = (e) => {
-    console.log(e);
-    message.error('Click on No');
-  };
-  return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Title</TableCell>
-            <TableCell>Description</TableCell>
-            <TableCell>Status</TableCell>
-            <TableCell>Create Date</TableCell>
-            <TableCell>Update Date</TableCell>
-            <TableCell>Delete Post</TableCell>
+  if (loading) return <Spin size="large" />;
 
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {posts.map((post) => (
-            <TableRow key={post.id}>
-              <TableCell>{post.id}</TableCell>
-              <TableCell>{post.title}</TableCell>
-              <TableCell>{post.description}</TableCell>
-              <TableCell>{post.status}</TableCell>
-              <TableCell>{post.createDate}</TableCell>
-              <TableCell>{post.updateDate}</TableCell>
-              <TableCell><Popconfirm
-                title="Delete the task"
-                description="Are you sure to delete this task?"
-                onConfirm={() => confirm(post.id)}
-                onCancel={cancel}
-                okText="Yes"
-                cancelText="No"
-              >
-                <DeleteOutlined />  </Popconfirm></TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
+  return <Table columns={columns} dataSource={posts} rowKey="id" />;
 }

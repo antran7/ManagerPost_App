@@ -1,7 +1,12 @@
-import { approvePost, deletePost, getPostsByStatus, rejectPost } from '../../api/postApi';
-import { useState, useEffect } from 'react';
-import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, CircularProgress, Button } from '@mui/material';
-import { Delete } from '@mui/icons-material';
+import {
+  approvePost,
+  deletePost,
+  getPostsByStatus,
+  rejectPost,
+} from "../../api/postApi";
+import { useState, useEffect } from "react";
+import { Table, Typography, Spin, Button, Space } from "antd";
+import type { ColumnsType } from "antd/es/table";
 
 type Post = {
   id: number;
@@ -20,7 +25,7 @@ export default function AdminPostApproval() {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const data = await getPostsByStatus('pending');
+        const data = await getPostsByStatus("pending");
         const sortedData = data.sort((a: Post, b: Post) =>
           a.createDate < b.createDate ? -1 : 1
         );
@@ -38,68 +43,73 @@ export default function AdminPostApproval() {
   const handleApprove = async (postId: number) => {
     try {
       await approvePost(postId);
-      setPosts(prevPosts => prevPosts.filter(post => post.id !== postId));
-    }catch(error) {
+      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+    } catch (error) {
       console.error(error.toString());
     }
-  }
+  };
 
   const handleReject = async (postId: number) => {
     try {
       await rejectPost(postId);
-      setPosts(prevPosts => prevPosts.filter(post => post.id !== postId));
-    }catch(error) {
+      setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+    } catch (error) {
       console.error(error.toString());
     }
-  }
+  };
 
-  if (loading) return <CircularProgress />;
+  const columns: ColumnsType<Post> = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Author",
+      dataIndex: "userId",
+      key: "userId",
+      render: () => "Ten la",
+    },
+    {
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
+      title: "Created Date",
+      dataIndex: "createDate",
+      key: "createDate",
+      render: (date) => new Date(date).toLocaleDateString(),
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (_, record) => (
+        <Space>
+          <Button type="primary" onClick={() => handleApprove(record.id)}>
+            Approve
+          </Button>
+          <Button danger onClick={() => handleReject(record.id)}>
+            Reject
+          </Button>
+        </Space>
+      ),
+    },
+  ];
+
+  if (loading) return <Spin size="large" />;
 
   return (
-    <TableContainer component={Paper} sx={{ maxWidth: 900, margin: 'auto', mt: 3, p: 2 }}>
-      <Typography variant="h6" sx={{ mb: 2 }}>Pending Posts</Typography>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Author</TableCell>
-            <TableCell>Title</TableCell>
-            <TableCell>Description</TableCell>
-            <TableCell>Created Date</TableCell>
-            <TableCell>Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {posts.map((post) => (
-            <TableRow key={post.id}>
-              <TableCell>{post.id}</TableCell>
-              <TableCell>Ten la</TableCell>
-              <TableCell>{post.title}</TableCell>
-              <TableCell>{post.description}</TableCell>
-              <TableCell>{new Date(post.createDate).toLocaleDateString()}</TableCell>
-              <TableCell>
-              <Button 
-                  variant="contained" 
-                  color="primary" 
-                  size="small" 
-                  onClick={() => handleApprove(post.id)} 
-                  sx={{ mr: 1 }}
-                >
-                  Approve
-                </Button>
-                <Button 
-                  variant="contained" 
-                  color="error" 
-                  size="small" 
-                  onClick={() => handleReject(post.id)}
-                >
-                  Reject
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div style={{ maxWidth: 900, margin: "24px auto", padding: "24px" }}>
+      <Typography.Title level={4} style={{ marginBottom: 16 }}>
+        Pending Posts
+      </Typography.Title>
+      <Table columns={columns} dataSource={posts} rowKey="id" />
+    </div>
   );
 }

@@ -1,14 +1,8 @@
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { useState, useEffect } from 'react';
-import { DeleteOutlined } from '@ant-design/icons';
-import { message, Popconfirm, PopconfirmProps } from 'antd';
-import { deleteUser, getAllUsers } from '../../api/userApi';
+import { Table, Spin, Popconfirm, message } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
+import { useState, useEffect } from "react";
+import { deleteUser, getAllUsers } from "../../api/userApi";
+import type { ColumnsType } from "antd/es/table";
 
 type User = {
   id: number;
@@ -19,7 +13,6 @@ type User = {
   updateDate: string;
   role: string;
 };
-
 
 export default function AdminUserTable() {
   const [users, setUsers] = useState<User[]>([]);
@@ -43,61 +36,60 @@ export default function AdminUserTable() {
     fetchUsers();
   }, []);
   if (loading) return <p>Loading posts...</p>;
-  
+
   const handleDelete = async (userId: number) => {
     try {
       await deleteUser(userId);
-      setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
-
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
     } catch (error) {
       console.error("Error deleting user:", error);
     }
   };
-  const confirm: PopconfirmProps['onConfirm'] = (userId) => {
-    handleDelete(userId);
-  };
+  const columns: ColumnsType<User> = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Create Date",
+      dataIndex: "createDate",
+      key: "createDate",
+    },
+    {
+      title: "Update Date",
+      dataIndex: "updateDate",
+      key: "updateDate",
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (_, record) => (
+        <Popconfirm
+          title="Delete the user"
+          description="Are you sure to delete this user?"
+          onConfirm={() => handleDelete(record.id)}
+          onCancel={() => message.error("Click on No")}
+          okText="Yes"
+          cancelText="No"
+        >
+          <DeleteOutlined style={{ cursor: "pointer" }} />
+        </Popconfirm>
+      ),
+    },
+  ];
 
-  const cancel: PopconfirmProps['onCancel'] = (e) => {
-    console.log(e);
-    message.error('Click on No');
-  };
+  if (loading) return <Spin size="large" />;
 
-  return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Create Date</TableCell>
-            <TableCell>Update Date</TableCell>
-            <TableCell>Delete Post</TableCell>
-
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {users.map((user) => (
-            <TableRow key={user.id}>
-              <TableCell>{user.id}</TableCell>
-              <TableCell>{user.name}</TableCell>
-              <TableCell>{user.email}</TableCell>
-
-              <TableCell>{user.createDate}</TableCell>
-              <TableCell>{user.updateDate}</TableCell>
-              <TableCell>Delete<Popconfirm
-                title="Delete the task"
-                description="Are you sure to delete this user?"
-                onConfirm={() => confirm(user.id)}
-                onCancel={cancel}
-                okText="Yes"
-                cancelText="No"
-              >
-                <DeleteOutlined />  </Popconfirm></TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
+  return <Table columns={columns} dataSource={users} rowKey="id" />;
 }
